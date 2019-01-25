@@ -21,7 +21,12 @@ function sendParkRequest(stateCode, limit){
 
   fetch(url)
     .then(data => data.json())
-    .then(response => console.log(response));
+    .then(response => displayResults(response));
+}
+
+function displayResults(responseObj){
+  const HTMLString = responseObj.data.map(obj => `<li>Name: ${obj.name} <br> Full Description: ${obj.description} <br> URL: ${obj.url}</li>`);
+  $('.js-results-list').html(HTMLString);
 }
 
 function formatQueryParams(paramsObject){
@@ -36,7 +41,8 @@ function userSearchHandler() {
     event.preventDefault();
 
     const stateCode = $('#state').val();
-    const limit = $('#max-results').val();
+    const limit = $('#max-results').val() - 1;
+    
     sendParkRequest(stateCode, limit);
   });
 }
